@@ -308,7 +308,7 @@ bool AP_GPS_NMEA::_term_complete()
                     make_gps_time(_new_date, _new_time * 10);
                     state.last_gps_time_ms = now;
                     // To-Do: add support for proper reporting of 2D and 3D fix
-			//state.status           = AP_GPS::GPS_OK_FIX_3D;			//austin
+			state.status           = AP_GPS::GPS_OK_FIX_3D;			//austin
                     fill_3d_velocity();
                     break;
                 case _GPS_SENTENCE_GGA:
@@ -319,19 +319,8 @@ bool AP_GPS_NMEA::_term_complete()
                     state.num_sats      = _new_satellite_count;
                     state.hdop          = _new_hdop;
                     // To-Do: add support for proper reporting of 2D and 3D fix
-                    if(_gps_data_FixRTK){
-                    state.status	= AP_GPS::GPS_OK_FIX_3D_RTK;//austin
-                    }
-			else if(_gps_data_FloatRTK){
-			state.status	= AP_GPS::GPS_OK_FIX_3D_DGPS;//austin
-			}
-			else
-			{
-			state.status           = AP_GPS::GPS_OK_FIX_3D;		
-			}
-			//state.status        = AP_GPS::GPS_OK_FIX_3D_DGPS;
+			state.status           = AP_GPS::GPS_OK_FIX_3D;
 			break;
-                    break;
                 case _GPS_SENTENCE_VTG:
                     _last_VTG_ms = now;
                     state.ground_speed  = _new_speed*0.01f;
