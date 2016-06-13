@@ -125,8 +125,6 @@ private:
     uint8_t _term_number;                                       ///< term index within the current sentence
     uint8_t _term_offset;                                       ///< character offset with the term being received
     bool _gps_data_good;                                        ///< set when the sentence indicates data is good
-    bool _gps_data_FixRTK;						///< read gps status in GGA sentence 4 for FixRTK		//austin
-    bool _gps_data_FloatRTK;					///< read gps status in GGA sentence 5 for	FloatRTK		//austin
     // The result of parsing terms within a message is stored temporarily until
     // the message is completely processed and the checksum validated.
     // This avoids the need to buffer the entire message.
