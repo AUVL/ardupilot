@@ -337,6 +337,11 @@ bool AP_GPS_NMEA::_term_complete()
                     fill_3d_velocity();
                     // VTG has no fix indicator, can't change fix status
                     break;
+		 case _GPS_SENTENCE_PSTI:						//austin
+                    _last_PSTI_ms = now;							//austin
+                    _new_hdop = (uint16_t)_parse_decimal_100(_term);		//austin
+
+                    break;
                 }
             } else {
                 switch (_sentence_type) {
@@ -371,6 +376,8 @@ bool AP_GPS_NMEA::_term_complete()
             _sentence_type = _GPS_SENTENCE_RMC;
         } else if (strcmp(term_type, "GGA") == 0) {
             _sentence_type = _GPS_SENTENCE_GGA;
+        }else if (strcmp(term_type, "TI") == 0) {
+            _sentence_type = _GPS_SENTENCE_PSTI;
         } else if (strcmp(term_type, "VTG") == 0) {
             _sentence_type = _GPS_SENTENCE_VTG;
             // VTG may not contain a data qualifier, presume the solution is good
@@ -399,10 +406,10 @@ bool AP_GPS_NMEA::_term_complete()
             _gps_data_good = _term[0] != 'N';
             break;
         case _GPS_SENTENCE_GGA + 7: // satellite count (GGA)
-            _new_satellite_count = atol(_term);
+           // _new_satellite_count = atol(_term);  //austin
             break;
         case _GPS_SENTENCE_GGA + 8: // HDOP (GGA)
-            _new_hdop = (uint16_t)_parse_decimal_100(_term);
+            _new_hdop = (uint16_t)_parse_decimal_100(_term);    
             break;
 
         // time and date
@@ -449,6 +456,10 @@ bool AP_GPS_NMEA::_term_complete()
         case _GPS_SENTENCE_VTG + 1: // Course (VTG)
             _new_course = _parse_decimal_100(_term);
             break;
+
+	// RTK ratio and RTK age
+	case _GPS_SENTENCE_PSTI + 15:						//austin
+		_new_satellite_count = atol(_term);					//austin
         }
     }
 
