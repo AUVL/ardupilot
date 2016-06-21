@@ -139,8 +139,10 @@ private:
     int32_t _new_speed;                                                 ///< speed parsed from a term
     int32_t _new_course;                                        ///< course parsed from a term
     uint16_t _new_hdop;                                                 ///< HDOP parsed from a term
-    uint16_t _new_satellite_count;                       ///< satellite count parsed from a term		//austin
+    uint8_t _new_satellite_count;                       ///< satellite count parsed from a term		
 
+    uint8_t _new_RTK_ratio;					///<RTK Ratio Value>
+	
     uint32_t _last_RMC_ms = 0;
     uint32_t _last_GGA_ms = 0;
     uint32_t _last_VTG_ms = 0;
