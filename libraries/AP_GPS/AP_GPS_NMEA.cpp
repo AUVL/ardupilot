@@ -309,6 +309,13 @@ bool AP_GPS_NMEA::_term_complete()
                     state.last_gps_time_ms = now;
                     // To-Do: add support for proper reporting of 2D and 3D fix
 			//state.status           = AP_GPS::GPS_OK_FIX_3D;			//austin
+			if(_gps_data_FixRTK){
+			state.status	= AP_GPS::GPS_OK_FIX_3D_RTK;//austin
+			}else if(_gps_data_FloatRTK){
+			state.status	= AP_GPS::GPS_OK_FIX_3D_DGPS;//austin
+			}else{
+			state.status		   = AP_GPS::GPS_OK_FIX_3D; 	
+			}					
                     fill_3d_velocity();
                     break;
                 case _GPS_SENTENCE_GGA:
@@ -316,7 +323,7 @@ bool AP_GPS_NMEA::_term_complete()
                     state.location.alt  = _new_altitude;
                     state.location.lat  = _new_latitude;
                     state.location.lng  = _new_longitude;
-                    state.num_sats      = _new_satellite_count;
+                    state.num_sats      = _new_satellite_count;			//austin
                     state.hdop          = _new_hdop;
                     // To-Do: add support for proper reporting of 2D and 3D fix
                     if(_gps_data_FixRTK){
@@ -324,7 +331,7 @@ bool AP_GPS_NMEA::_term_complete()
                     }
 			else if(_gps_data_FloatRTK){
 			state.status	= AP_GPS::GPS_OK_FIX_3D_DGPS;//austin
-			}
+			} 
 			else
 			{
 			state.status           = AP_GPS::GPS_OK_FIX_3D;		
@@ -337,10 +344,8 @@ bool AP_GPS_NMEA::_term_complete()
                     fill_3d_velocity();
                     // VTG has no fix indicator, can't change fix status
                     break;
-		 case _GPS_SENTENCE_PSTI:						//austin
-                    _last_PSTI_ms = now;							//austin
-                    _new_hdop = (uint16_t)_parse_decimal_100(_term);		//austin
-
+		 case _GPS_SENTENCE_PSTI:						/*//austin*/
+                    _last_PSTI_ms = now;							/*//austin*/
                     break;
                 }
             } else {
@@ -406,10 +411,10 @@ bool AP_GPS_NMEA::_term_complete()
             _gps_data_good = _term[0] != 'N';
             break;
         case _GPS_SENTENCE_GGA + 7: // satellite count (GGA)
-           // _new_satellite_count = atol(_term);  //austin
+            //_new_satellite_count = atol(_term);				`//austin
             break;
         case _GPS_SENTENCE_GGA + 8: // HDOP (GGA)
-            _new_hdop = (uint16_t)_parse_decimal_100(_term);    
+            _new_hdop = (uint16_t)_parse_decimal_100(_term);      //austin
             break;
 
         // time and date
@@ -458,8 +463,14 @@ bool AP_GPS_NMEA::_term_complete()
             break;
 
 	// RTK ratio and RTK age
-	case _GPS_SENTENCE_PSTI + 15:						//austin
-		_new_satellite_count = atol(_term);					//austin
+	case _GPS_SENTENCE_PSTI + 15:			//austin
+		//_new_satellite_count = atol(_term);
+		_new_RTK_ratio = atol(_term);
+		if(_new_RTK_ratio > 10){
+		_new_satellite_count= 10;
+		}else{_new_satellite_count = atol(_term);
+		}
+		break;
         }
     }
 
