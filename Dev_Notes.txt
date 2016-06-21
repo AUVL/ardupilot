@@ -1,0 +1,3 @@
+2016.06.21
+
+state.num_sats      = _new_satellite_count = "RTK ratio value"
