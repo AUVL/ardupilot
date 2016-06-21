@@ -64,11 +64,12 @@ public:
 	static bool _detect(struct NMEA_detect_state &state, uint8_t data);
 
 private:
-    /// Coding for the GPS sentences that the parser handles
+    /// Coding for the GPS sent;ences that the parser handles
     enum _sentence_types {      //there are some more than 10 fields in some sentences , thus we have to increase these value.
         _GPS_SENTENCE_RMC = 32,
         _GPS_SENTENCE_GGA = 64,
         _GPS_SENTENCE_VTG = 96,
+        _GPS_SENTENCE_PSTI = 128,
         _GPS_SENTENCE_OTHER = 0
     };
 
@@ -138,11 +139,12 @@ private:
     int32_t _new_speed;                                                 ///< speed parsed from a term
     int32_t _new_course;                                        ///< course parsed from a term
     uint16_t _new_hdop;                                                 ///< HDOP parsed from a term
-    uint8_t _new_satellite_count;                       ///< satellite count parsed from a term
+    uint16_t _new_satellite_count;                       ///< satellite count parsed from a term		//austin
 
     uint32_t _last_RMC_ms = 0;
     uint32_t _last_GGA_ms = 0;
     uint32_t _last_VTG_ms = 0;
+    uint32_t _last_PSTI_ms = 0;                       ///<austin>
 
     /// @name	Init strings
     ///			In ::init, an attempt is made to configure the GPS
