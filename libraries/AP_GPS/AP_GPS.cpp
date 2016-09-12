@@ -580,7 +580,7 @@ AP_GPS::send_mavlink_gps_raw(mavlink_channel_t chan)
         ground_speed(0)*100,  // cm/s
         ground_course(0)*100, // 1/100 degrees,
         num_sats(0));
-	//hal.console->print("loc.lat"); //JR
+	    hal.console->print("loc.lng"); //JR
 }
 
 void 
