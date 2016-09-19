@@ -832,11 +832,11 @@ AP_GPS_UBLOX::_parse_gps(void)
         state.have_horizontal_accuracy = true;
         state.have_vertical_accuracy = true;
 		hal.uartD->begin(115200,256,256); //JR
-		hal.uartD->open(); //JR
-		//hal.uartD->println(state.location.lng); //JR
-		//hal.uartD->print(state.location.lat); //JR
+		//hal.uartD->open(); //JR
+		hal.uartD->println(state.location.lng); //JR
+		hal.uartD->print(state.location.lat); //JR
 		//hal.uartD->available(2); //JR
-		hal.uartD->write((state.location.lng)+(state.location.lat)); //JR
+		//hal.uartD->write((state.location.lng)+(state.location.lat)); //JR
 #if UBLOX_FAKE_3DLOCK
         state.location.lng = 1491652300L;
         state.location.lat = -353632610L;
