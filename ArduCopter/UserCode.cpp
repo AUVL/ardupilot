@@ -39,7 +39,7 @@ void Copter::userhook_MediumLoop()
 void Copter::userhook_SlowLoop()
 {
     // put your 3.3Hz code here
-    int RX[10];
+    char RX[10];
 	for(int i = 0; i < 10; i++){
 		puts(RX[i]);
 		}
