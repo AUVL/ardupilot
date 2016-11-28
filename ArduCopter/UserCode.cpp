@@ -40,7 +40,7 @@ void Copter::userhook_SlowLoop()
 {
     // put your 3.3Hz code here
     int RX;
-	char buffer[10];
+	int buffer;
     RX = read("/dev/ttyS6",&buffer,10);
 	hal.console->println(RX);
 }
