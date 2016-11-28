@@ -7,6 +7,10 @@ void Copter::userhook_init()
 {
     // put your initialisation code here
     // this will be called once at start-up
+    hal.console->begin(115200);
+	hal.uartE->begin(57600);
+    hal.console->is_initialized();
+	hal.uartE->is_initialized();
 }
 #endif
 
@@ -35,6 +39,9 @@ void Copter::userhook_MediumLoop()
 void Copter::userhook_SlowLoop()
 {
     // put your 3.3Hz code here
+    char LatLng[];
+	LatLng = hal.uartE->read();
+	hal.console->printf("%s",LatLng);
 }
 #endif
 
