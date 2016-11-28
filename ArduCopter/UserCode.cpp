@@ -39,7 +39,7 @@ void Copter::userhook_MediumLoop()
 void Copter::userhook_SlowLoop()
 {
     // put your 3.3Hz code here
-    int RX[10];
+    int RX;
 	RX= hal.uartE->read();
 	hal.console->printf("%s",RX);
 }
