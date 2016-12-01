@@ -47,8 +47,19 @@ void Copter::userhook_SlowLoop()
 #endif
 
 #ifdef USERHOOK_SUPERSLOWLOOP
-void Copter::userhook_SuperSlowLoop()
+void Copter::userhook_SuperSlowLoop(mavlink_message_t *msg)
 {
     // put your 1Hz code here
+    mavlink_follow_target_t follow_target_msg;
+	follow_target_s follow_target_topic = { };
+
+	mavlink_msg_follow_target_decode(msg, &follow_target_msg);
+
+	follow_target_topic.timestamp = hrt_absolute_time();
+
+	follow_target_topic.lat = follow_target_msg.lat*1e-7;
+	follow_target_topic.lon = follow_target_msg.lon*1e-7;
+	follow_target_topic.alt = follow_target_msg.alt;
+	hal.console->print(follow_target_topic.lat);
 }
 #endif
