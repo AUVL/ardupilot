@@ -47,9 +47,10 @@ void Copter::userhook_SlowLoop()
 #endif
 
 #ifdef USERHOOK_SUPERSLOWLOOP
-void Copter::userhook_SuperSlowLoop(mavlink_message_t *msg)
+void Copter::userhook_SuperSlowLoop()
 {
     // put your 1Hz code here
+    mavlink_message_t *msg;
     mavlink_follow_target_t follow_target_msg;
 	follow_target_s follow_target_topic = { };
 
