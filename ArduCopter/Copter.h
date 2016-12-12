@@ -691,7 +691,7 @@ private:
     void userhook_50Hz();
     void userhook_MediumLoop();
     void userhook_SlowLoop();
-    void userhook_SuperSlowLoop();
+    void userhook_SuperSlowLoop(mavlink_message_t* msg);
     void update_home_from_EKF();
     void set_home_to_current_location_inflight();
     bool set_home_to_current_location();
