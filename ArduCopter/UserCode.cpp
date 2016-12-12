@@ -1,6 +1,7 @@
 /// -*- tab-width: 4; Mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*-
 
 #include "Copter.h"
+#include "Follow_target.h"
 
 #ifdef USERHOOK_INIT
 void Copter::userhook_init()
@@ -50,9 +51,8 @@ void Copter::userhook_SlowLoop()
 void Copter::userhook_SuperSlowLoop()
 {
     // put your 1Hz code here
-    mavlink_message_t *msg;
     mavlink_follow_target_t follow_target_msg;
-	struct follow_target_s follow_target_topic = { };
+	follow_target_s follow_target_topic = { };
 
 	mavlink_msg_follow_target_decode(msg, &follow_target_msg);
 
@@ -61,6 +61,11 @@ void Copter::userhook_SuperSlowLoop()
 	follow_target_topic.lat = follow_target_msg.lat*1e-7;
 	follow_target_topic.lon = follow_target_msg.lon*1e-7;
 	follow_target_topic.alt = follow_target_msg.alt;
-	hal.console->print(follow_target_topic.lat);
+
+	if (_follow_target_pub == nullptr) {
+		_follow_target_pub = orb_advertise(ORB_ID(follow_target), &follow_target_topic);
+	} else {
+		orb_publish(ORB_ID(follow_target), _follow_target_pub, &follow_target_topic);
+	}
 }
 #endif
