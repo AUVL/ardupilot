@@ -42,6 +42,6 @@ void Copter::userhook_SlowLoop()
 void Copter::userhook_SuperSlowLoop()
 {
     // put your 1Hz code here
-    gcs_send_message(MSG_POSITION_TARGET_GLOBAL_INT)
+    gcs_send_message(MSG_POSITION_TARGET_GLOBAL_INT);
 }
 #endif
