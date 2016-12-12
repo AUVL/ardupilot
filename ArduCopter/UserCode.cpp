@@ -43,7 +43,7 @@ void Copter::userhook_SlowLoop()
 #endif
 
 #ifdef USERHOOK_SUPERSLOWLOOP
-void Copter::userhook_SuperSlowLoop(mavlink_message_t* msg)
+void Copter::userhook_SuperSlowLoop()
 {
     // put your 1Hz code here
     uint8_t result = MAV_RESULT_FAILED;         // assume failure.  Each messages id is responsible for return ACK or NAK if required
