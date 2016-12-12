@@ -10,7 +10,7 @@
 
 void Copter::gcs_send_heartbeat(void)
 {
-    gcs_send_message(MSG_HEARTBEAT);
+    //gcs_send_message(MSG_HEARTBEAT);
 }
 
 void Copter::gcs_send_deferred(void)
