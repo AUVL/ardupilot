@@ -7,6 +7,16 @@ void Copter::userhook_init()
 {
     // put your initialisation code here
     // this will be called once at start-up
+    typedef struct __mavlink_message {
+	uint16_t checksum; /// sent at end of packet
+	uint8_t magic;   ///< protocol magic marker
+	uint8_t len;     ///< Length of payload
+	uint8_t seq;     ///< Sequence of packet
+	uint8_t sysid;   ///< ID of message sender system/aircraft
+	uint8_t compid;  ///< ID of the message sender component
+	uint8_t msgid;   ///< ID of message in payload
+	uint64_t payload64[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8];
+} mavlink_message_t;
 }
 #endif
 
@@ -46,16 +56,7 @@ void Copter::userhook_SlowLoop()
 void Copter::userhook_SuperSlowLoop()
 {
     // put your 1Hz code here
-    typedef struct __mavlink_message {
-	uint16_t checksum; /// sent at end of packet
-	uint8_t magic;   ///< protocol magic marker
-	uint8_t len;     ///< Length of payload
-	uint8_t seq;     ///< Sequence of packet
-	uint8_t sysid;   ///< ID of message sender system/aircraft
-	uint8_t compid;  ///< ID of the message sender component
-	uint8_t msgid;   ///< ID of message in payload
-	uint64_t payload64[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8];
-} mavlink_message_t;
+    
 	mavlink_message_t msg;
     uint8_t result = MAV_RESULT_FAILED;         // assume failure.  Each messages id is responsible for return ACK or NAK if required
 
