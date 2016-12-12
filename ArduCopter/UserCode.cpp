@@ -42,6 +42,14 @@ void Copter::userhook_SlowLoop()
 void Copter::userhook_SuperSlowLoop()
 {
     // put your 1Hz code here
-    gcs_send_message(MSG_POSITION_TARGET_GLOBAL_INT);
+    mavlink_msg_position_target_global_int_send(
+    MAVLINK_COMM_2,
+    millis(),
+    MAV_FRAME_GLOBAL_INT,
+    current_loc.lat,
+    current_loc.lng,
+    (ahrs.get_home().alt + current_loc.alt) * 10UL,      // millimeters above sea level
+        current_loc.alt * 10,
+    ahrs.yaw_sensor);
 }
 #endif
