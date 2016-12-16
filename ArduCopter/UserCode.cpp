@@ -43,8 +43,8 @@ void Copter::userhook_SlowLoop()
 void Copter::userhook_SuperSlowLoop()
 {
     // put your 1Hz code here
-/*
-   uint32_t fix_time;
+
+    uint32_t fix_time;
     // if we have a GPS fix, take the time as the last fix time. That
     // allows us to correctly calculate velocities and extrapolate
     // positions.
@@ -67,11 +67,13 @@ void Copter::userhook_SuperSlowLoop()
         vel.y,                          // Y speed cm/s (+ve East)
         vel.z,                          // Z speed cm/s (+ve up)
         ahrs.yaw_sensor);               // compass heading in 1/100 degree
- */
+
+/*
 	for (uint8_t i=0; i<num_gcs; i++) {
         if (gcs[i].initialised) {
             gcs[i].send_message(MSG_LOCATION);
         }
     }
+*/
 }
 #endif
