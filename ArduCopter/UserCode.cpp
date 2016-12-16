@@ -70,7 +70,7 @@ void Copter::userhook_SuperSlowLoop()
  */
 	for (uint8_t i=0; i<num_gcs; i++) {
         if (gcs[i].initialised) {
-            gcs[i].send_message(MSG_GPS_RAW);
+            gcs[i].send_message(MSG_POSITION_TARGET_GLOBAL_INT);
         }
     }
 }
