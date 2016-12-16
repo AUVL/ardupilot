@@ -2,6 +2,7 @@
 
 #include "Copter.h"
 
+
 #ifdef USERHOOK_INIT
 void Copter::userhook_init()
 {
@@ -48,7 +49,8 @@ void Copter::userhook_SuperSlowLoop()
     // positions.
     // If we don't have a GPS fix then we are dead reckoning, and will
     // use the current boot time as the fix time.
-    if (gps.status() >= AP_GPS::GPS_OK_FIX_2D) {
+/*
+	if (gps.status() >= AP_GPS::GPS_OK_FIX_2D) {
         fix_time = gps.last_fix_time_ms();
     } else {
         fix_time = millis();
@@ -65,5 +67,11 @@ void Copter::userhook_SuperSlowLoop()
         vel.y,                          // Y speed cm/s (+ve East)
         vel.z,                          // Z speed cm/s (+ve up)
         ahrs.yaw_sensor);               // compass heading in 1/100 degree
+ */
+	for (uint8_t i=0; i<num_gcs; i++) {
+        if (gcs[i].initialised) {
+            gcs[i].send_message(MAVLINK_MSG_ID_SET_POSITION_TARGET_GLOBAL_INT);
+        }
+    }
 }
 #endif
