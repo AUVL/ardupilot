@@ -1045,6 +1045,7 @@ private:
     bool verify_nav_wp(const AP_Mission::Mission_Command& cmd);
     bool verify_circle(const AP_Mission::Mission_Command& cmd);
     bool verify_spline_wp(const AP_Mission::Mission_Command& cmd);
+	bool verify_nav_follow (const AP_Mission::Mission_Command& cmd);
 #if NAV_GUIDED == ENABLED
     bool verify_nav_guided_enable(const AP_Mission::Mission_Command& cmd);
 #endif
