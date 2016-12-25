@@ -726,6 +726,9 @@ private:
     void auto_wp_start(const Vector3f& destination);
     void auto_wp_start(const Location_Class& dest_loc);
     void auto_wp_run();
+	void auto_follow_start(const Vector3f& destination);
+    void auto_follow_start(const Location_Class& dest_loc);
+    void auto_follow_run();
     void auto_spline_run();
     void auto_land_start();
     void auto_land_start(const Vector3f& destination);
