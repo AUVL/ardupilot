@@ -47,6 +47,9 @@ bool Copter::start_command(const AP_Mission::Mission_Command& cmd)
         do_spline_wp(cmd);
         break;
 
+	case MAV_CMD_NAV_FOLLOW:			// 25 JR
+		do_nav_follow(cmd);
+
 #if NAV_GUIDED == ENABLED
     case MAV_CMD_NAV_GUIDED_ENABLE:             // 92  accept navigation commands from external nav computer
         do_nav_guided_enable(cmd);
@@ -210,6 +213,9 @@ bool Copter::verify_command(const AP_Mission::Mission_Command& cmd)
 
     case MAV_CMD_NAV_SPLINE_WAYPOINT:
         return verify_spline_wp(cmd);
+
+	case MAV_CMD_NAV_FOLLOW:
+		return verify_nav_follow(cmd); //JR
 
 #if NAV_GUIDED == ENABLED
     case MAV_CMD_NAV_GUIDED_ENABLE:
@@ -507,6 +513,41 @@ void Copter::do_spline_wp(const AP_Mission::Mission_Command& cmd)
     auto_spline_start(target_loc, stopped_at_start, seg_end_type, next_loc);
 }
 
+// do_nav_follow - initiate move to waypoint
+void Copter::do_nav_follow(const AP_Mission::Mission_Command& cmd)
+{
+    Location_Class target_loc(cmd.content.location);
+    // use current lat, lon if zero
+    if (target_loc.lat == 0 && target_loc.lng == 0) {
+        target_loc.lat = current_loc.lat;
+        target_loc.lng = current_loc.lng;
+    }
+    // use current altitude if not provided
+    if (target_loc.alt == 0) {
+        // set to current altitude but in command's alt frame
+        int32_t curr_alt;
+        if (current_loc.get_alt_cm(target_loc.get_alt_frame(),curr_alt)) {
+            target_loc.set_alt_cm(curr_alt, target_loc.get_alt_frame());
+        } else {
+            // default to current altitude as alt-above-home
+            target_loc.set_alt_cm(current_loc.alt, current_loc.get_alt_frame());
+        }
+    }
+    
+    // this will be used to remember the time in millis after we reach or pass the WP.
+    loiter_time = 0;
+    // this is the delay, stored in seconds
+    loiter_time_max = cmd.p1;
+
+    // Set wp navigation target
+    auto_follow_start(target_loc);
+
+    // if no delay set the waypoint as "fast"
+    if (loiter_time_max == 0 ) {
+        wp_nav.set_fast_waypoint(true);
+    }
+
+
 #if NAV_GUIDED == ENABLED
 // do_nav_guided_enable - initiate accepting commands from external nav computer
 void Copter::do_nav_guided_enable(const AP_Mission::Mission_Command& cmd)
@@ -744,6 +785,32 @@ bool Copter::verify_spline_wp(const AP_Mission::Mission_Command& cmd)
         return false;
     }
 }
+
+// verify_nav_follow - check if we have reached the next way point
+bool Copter::verify_nav_follow(const AP_Mission::Mission_Command& cmd)
+{
+    // check if we have reached the waypoint
+    if( !wp_nav.reached_wp_destination() ) {
+        return false;
+    }
+
+    // play a tone
+    AP_Notify::events.waypoint_complete = 1;
+
+    // start timer if necessary
+    if(loiter_time == 0) {
+        loiter_time = millis();
+    }
+
+    // check if timer has run out
+    if (((millis() - loiter_time) / 1000) >= loiter_time_max) {
+        gcs_send_text_fmt(MAV_SEVERITY_INFO, "Reached command #%i",cmd.index);
+        return true;
+    }else{
+        return false;
+    }
+}
+
 
 #if NAV_GUIDED == ENABLED
 // verify_nav_guided - check if we have breached any limits
