@@ -546,6 +546,7 @@ void Copter::do_nav_follow(const AP_Mission::Mission_Command& cmd)
     if (loiter_time_max == 0 ) {
         wp_nav.set_fast_waypoint(true);
     }
+}
 
 
 #if NAV_GUIDED == ENABLED
