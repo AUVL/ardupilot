@@ -1019,6 +1019,7 @@ private:
     void do_circle(const AP_Mission::Mission_Command& cmd);
     void do_loiter_time(const AP_Mission::Mission_Command& cmd);
     void do_spline_wp(const AP_Mission::Mission_Command& cmd);
+	void do_nav_follow(const AP_Mission::Mission_Command& cmd);
 #if NAV_GUIDED == ENABLED
     void do_nav_guided_enable(const AP_Mission::Mission_Command& cmd);
     void do_guided_limits(const AP_Mission::Mission_Command& cmd);
