@@ -726,9 +726,9 @@ private:
     void auto_wp_start(const Vector3f& destination);
     void auto_wp_start(const Location_Class& dest_loc);
     void auto_wp_run();
-	void auto_follow_start(const Vector3f& destination);
-    void auto_follow_start(const Location_Class& dest_loc);
-    void auto_follow_run();
+	void auto_follow_start(const Vector3f& destination);    //JR
+    void auto_follow_start(const Location_Class& dest_loc); //JR
+    void auto_follow_run();								  //JR
     void auto_spline_run();
     void auto_land_start();
     void auto_land_start(const Vector3f& destination);
@@ -1019,7 +1019,7 @@ private:
     void do_circle(const AP_Mission::Mission_Command& cmd);
     void do_loiter_time(const AP_Mission::Mission_Command& cmd);
     void do_spline_wp(const AP_Mission::Mission_Command& cmd);
-	void do_nav_follow(const AP_Mission::Mission_Command& cmd);
+	void do_nav_follow(const AP_Mission::Mission_Command& cmd); //JR
 #if NAV_GUIDED == ENABLED
     void do_nav_guided_enable(const AP_Mission::Mission_Command& cmd);
     void do_guided_limits(const AP_Mission::Mission_Command& cmd);
@@ -1045,7 +1045,7 @@ private:
     bool verify_nav_wp(const AP_Mission::Mission_Command& cmd);
     bool verify_circle(const AP_Mission::Mission_Command& cmd);
     bool verify_spline_wp(const AP_Mission::Mission_Command& cmd);
-	bool verify_nav_follow (const AP_Mission::Mission_Command& cmd);
+	bool verify_nav_follow (const AP_Mission::Mission_Command& cmd); //JR
 #if NAV_GUIDED == ENABLED
     bool verify_nav_guided_enable(const AP_Mission::Mission_Command& cmd);
 #endif

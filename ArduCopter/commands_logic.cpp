@@ -787,7 +787,7 @@ bool Copter::verify_spline_wp(const AP_Mission::Mission_Command& cmd)
     }
 }
 
-// verify_nav_follow - check if we have reached the next way point
+// verify_nav_follow - check if we have reached the way point
 bool Copter::verify_nav_follow(const AP_Mission::Mission_Command& cmd)
 {
     // check if we have reached the waypoint
